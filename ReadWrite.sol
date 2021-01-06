@@ -6,6 +6,7 @@ contract readWrite {
     // use private to disabled read function
     string public name = "xcrone";
     uint256 public age = 21;
+    string[2] public group; // fixed array
     
     // public is for enabled write function
     // use private to disabled write function
@@ -17,5 +18,9 @@ contract readWrite {
     function setAge(uint256 _age) public returns(uint256) {
         age = _age;
         return age;
+    }
+
+    function setGroup(uint index, string memory value) public {
+        group[index] = value;
     }
 }
