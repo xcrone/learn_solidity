@@ -84,4 +84,8 @@ contract readWrite {
             return false;
         }
     }
+
+    // =============== ENUM ===============
+    enum State {running, stopped, inactive}
+    State public status = State.running;
 }
