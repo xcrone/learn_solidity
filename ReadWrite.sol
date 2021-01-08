@@ -28,4 +28,9 @@ contract readWrite {
     function addPrice(uint _price) public {
         price.push(_price);
     }
+
+    // read price length
+    function getPriceLength() view returns(uint) {
+        return price.length;
+    }
 }
