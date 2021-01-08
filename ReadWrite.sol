@@ -30,7 +30,7 @@ contract readWrite {
     }
 
     // read price length
-    function getPriceLength() view returns(uint) {
+    function getPriceLength() public view returns(uint) {
         return price.length;
     }
 
