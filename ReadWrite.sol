@@ -48,4 +48,25 @@ contract readWrite {
         price.pop();
         return true;
     } 
+    
+    // =============== STRUCT ===============
+    // struct is a collection similar to mapping
+    // declare a new datatype with struct
+    struct Car {
+        string description;
+        uint value;
+        uint built_year;
+    }
+    // declare a new variable with datatype Car
+    Car public tesla;
+    mapping(address => Car) public cars;
+    
+    constructor(string memory _description, uint _value, uint _built_year) {
+        tesla.description = _description;
+        tesla.value = _value;
+        tesla.built_year = _built_year;
+        
+        // msg.sender is the address of account that deploys the contract
+        cars[msg.sender] = tesla;
+    }
 }
