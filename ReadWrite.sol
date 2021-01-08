@@ -69,4 +69,19 @@ contract readWrite {
         // msg.sender is the address of account that deploys the contract
         cars[msg.sender] = tesla;
     }
+
+    // modify struct variable
+    function modify_car(string memory _description, uint _value, uint _built_year) public returns(bool) {
+        if(status == State.running) {
+            Car memory newTesla = Car({
+                description: _description,
+                value: _value,
+                built_year: _built_year
+            });
+            tesla = newTesla;
+            return true;
+        }else {
+            return false;
+        }
+    }
 }
