@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.0;
 
-contract readWrite {
+contract Basic {
     // public is for enabled read function
     // use private to disabled read function
     string public name = "xcrone";
