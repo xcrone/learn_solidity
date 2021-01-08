@@ -33,4 +33,19 @@ contract readWrite {
     function getPriceLength() view returns(uint) {
         return price.length;
     }
+
+    // delete element from dynamic array
+    function deletePriceElement(uint index) public returns(bool) {
+        // check if index is defined
+        if(index >= price.length) {
+            return false;
+        }
+        // reset array index value start from index input
+        for(uint i = index; i < price.length - 1; i++) {
+            price[i] = price[i+1];
+        }
+        // remove/resize the remaining index
+        price.pop();
+        return true;
+    } 
 }
