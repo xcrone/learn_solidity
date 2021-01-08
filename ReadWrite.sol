@@ -7,7 +7,7 @@ contract readWrite {
     string public name = "xcrone";
     uint256 public age = 21;
     string[2] public group; // fixed array // array index count is set to 2
-    uint[] public price; // dynamic array // can push unlimited index
+    uint[] public price; // dynamic array // dynanic arrays are saved by default in storage even in function
     
     // public is for enabled write function
     // use private to disabled write function
@@ -88,4 +88,15 @@ contract readWrite {
     // =============== ENUM ===============
     enum State {running, stopped, inactive}
     State public status = State.running;
+
+    
+    // =============== MAPPING ===============
+    // set key and value for mapping when declare variable
+    mapping(address => uint) public bids;
+    // payable is allow contract for hold an ether balance and an account can send ether to contract
+    function bid() payable public {
+        // msg.sender is account that write this function
+        // msg.value is wei value that sent when write this function
+        bids[msg.sender] = msg.value;
+    }
 }
