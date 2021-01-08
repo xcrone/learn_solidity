@@ -6,7 +6,8 @@ contract readWrite {
     // use private to disabled read function
     string public name = "xcrone";
     uint256 public age = 21;
-    string[2] public group; // fixed array
+    string[2] public group; // fixed array // array index count is set to 2
+    uint[] public price; // dynamic array // can push unlimited index
     
     // public is for enabled write function
     // use private to disabled write function
@@ -22,5 +23,9 @@ contract readWrite {
 
     function setGroup(uint index, string memory value) public {
         group[index] = value;
+    }
+
+    function addPrice(uint _price) public {
+        price.push(_price);
     }
 }
