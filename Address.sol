@@ -24,5 +24,21 @@ contract Address {
     receive() external payable {
         location = "malaysia";
     }
+
+    // transfer ether balance in this contract to other contract/wallet
+    function transfer_balance(address payable recipient_address, uint amount) public returns(bool) {
+        // only owner can use this function
+        if(msg.sender == owner) {
+            if(amount <= get_balance()) {
+                // use transfer() to transfer ether
+                recipient_address.transfer(amount);
+                return true;
+            }else {
+                return false;
+            }   
+        }else {
+            return false;
+        }
+    }
     
 }
