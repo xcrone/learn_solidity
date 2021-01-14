@@ -23,6 +23,7 @@ contract Lottery {
     
     function randMod() public view returns(uint256) { 
         // random number
+        // 3 parameter in encodePacked is any uint value to make it random
         return uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, players.length)));
     } 
     
