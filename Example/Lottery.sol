@@ -20,4 +20,39 @@ contract Lottery {
         require(msg.sender == manager); // only manager can view balance
         return address(this).balance;
     }
+    
+    function randMod() public view returns(uint256) { 
+        // random number
+        return uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender, players.length)));
+    } 
+    
+    function selectWinner() public {
+        require(msg.sender == manager);
+        
+        // get winner address
+        uint r = randMod(); // should be random number
+        uint index = r % players.length;
+        address winner;
+        winner = players[index];
+        
+        // change winner address from datatype "address" to datatype "address payable"
+        rewardsWinner(payable(winner), address(this).balance);
+    }
+    
+    function rewardsWinner(address payable winner, uint256 amount) private {
+        // transfer
+        winner.transfer(amount);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
