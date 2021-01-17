@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 contract GlobalVariables {
 
     // get current timestamp in unix epoch
-    uint public block_timestamp = block.timestamp;
+    uint public block_timestamp = block.timestamp; // same as now
 
     // get block number
     uint public block_number = block.number;
