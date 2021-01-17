@@ -2,6 +2,15 @@
 
 pragma solidity ^0.8.0;
 
+contract AuctionCreator {
+    address[] public auctions;
+    
+    function createAuctoin() public {
+        address newAuction = address(new Auction(msg.sender));
+        auctions.push(newAuction);
+    }
+}
+
 contract Auction {
     address public owner;
     uint public startBlock;
@@ -28,8 +37,8 @@ contract Auction {
     //     bidIncrement = _bidIncrement;
     // }
     
-    constructor() {
-        owner = msg.sender;
+    constructor(address _creator) {
+        owner = _creator;
         auction_state = State.Running;
         startBlock = block.number;
         // 604800 second == a week
