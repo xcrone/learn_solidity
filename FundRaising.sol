@@ -11,6 +11,21 @@ contract FundRaising {
     uint public goal;
     uint public raisedAmount = 0;
     
+    struct Request {
+        string description;
+        address recipient;
+        uint value;
+        bool completed;
+        uint noOfVoters;
+        mapping(address => bool) voters;
+    }
+    Request[] public requests;
+    
+    modifier onlyAdmin() {
+        require(msg.sender == admin);
+        _;
+    }
+    
     constructor(uint _goal, uint _deadline) {
         goal = _goal;
         deadline = block.timestamp + _deadline;
@@ -40,6 +55,35 @@ contract FundRaising {
         uint value = contributors[msg.sender];
         payable(recipient).transfer(value);
         contributors[msg.sender] = 0;
+    }
+    
+    function createRequest(string memory _description, address _recipient, uint _value) public onlyAdmin {
+        Request memory newRequest = Request({ // ERROR
+            description: _description,
+            recipient: _recipient,
+            value: _value,
+            completed: false,
+            noOfVoters: 0
+        });
+        
+        requests.push(newRequest);
+    }
+    
+    function voteRequet(uint index) public {
+        Request memory thisRequest = requests[index];
+        require(contributors[msg.sender] == 0);
+        require(thisRequest.voters[msg.sender] == false);
+        
+        thisRequest.voters[msg.sender] = true;
+        thisRequest.noOfVoters++;
+    }
+    
+    function makePayment(uint index) public onlyAdmin {
+        Request storage thisRequest = requests[index];
+        require(thisRequest.completed == false);
+        require(thisRequest.noOfVoters > noOfContributors / 2); // more than 50% voted
+        thisRequest.recipient.transfer(thisRequest.value);
+        thisRequest.completed = true;
     }
     
 }
