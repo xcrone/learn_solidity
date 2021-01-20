@@ -21,6 +21,10 @@ contract FundRaising {
     }
     Request[] public requests;
     
+    event ContributeEvent(address sender, uint value);
+    event CreateRequestEvent(string _description, address _recipient, uint _value);
+    event makePaymentEvent(address recipient, uint value);
+    
     modifier onlyAdmin() {
         require(msg.sender == admin);
         _;
@@ -41,6 +45,8 @@ contract FundRaising {
         }
         contributors[msg.sender] += msg.value;
         raisedAmount += msg.value;
+        
+        emit ContributeEvent(msg.sender, msg.value);
     }
     
     function getBalance() public view returns(uint) {
@@ -57,20 +63,22 @@ contract FundRaising {
         contributors[msg.sender] = 0;
     }
     
-    function createRequest(string memory _description, address _recipient, uint _value) public onlyAdmin {
-        Request memory newRequest = Request({ // ERROR
-            description: _description,
-            recipient: _recipient,
-            value: _value,
-            completed: false,
-            noOfVoters: 0
-        });
+    // function createRequest(string memory _description, address _recipient, uint _value) public onlyAdmin {
+    //     Request memory newRequest = Request({
+    //         description: _description,
+    //         recipient: _recipient,
+    //         value: _value,
+    //         completed: false,
+    //         noOfVoters: 0
+    //     });
         
-        requests.push(newRequest);
-    }
+    //     requests.push(newRequest);
+        
+    //     emit CreateRequestEvent(_description, _recipient, _value);
+    // }
     
     function voteRequet(uint index) public {
-        Request memory thisRequest = requests[index];
+        Request storage thisRequest = requests[index];
         require(contributors[msg.sender] == 0);
         require(thisRequest.voters[msg.sender] == false);
         
@@ -82,8 +90,10 @@ contract FundRaising {
         Request storage thisRequest = requests[index];
         require(thisRequest.completed == false);
         require(thisRequest.noOfVoters > noOfContributors / 2); // more than 50% voted
-        thisRequest.recipient.transfer(thisRequest.value);
+        payable(thisRequest.recipient).transfer(thisRequest.value);
         thisRequest.completed = true;
+        
+        emit makePaymentEvent(thisRequest.recipient, thisRequest.value);
     }
     
 }
