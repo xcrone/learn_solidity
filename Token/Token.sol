@@ -19,21 +19,26 @@ contract Token is ERC20Interface {
     string public name;
     string public symbol;
     uint public decimals;
-    uint public supply;
+    uint public total_supply;
     address public founder;
-    mapping(address => uint) public balances;
+    mapping(address => uint) private balances;
+    
+    modifier onlyFounder() {
+        require(msg.sender == founder);
+        _;
+    }
 
-    constructor(string memory _name, string memory _symbol, uint256 _decimals, uint256 _totalSupply) {
+    constructor(string memory _name, string memory _symbol, uint256 _decimals, uint256 _total_supply) {
         name = _name;
         symbol = _symbol;
         decimals = _decimals;
-        supply = _totalSupply;
+        total_supply = _total_supply * 1000000000000000000;
         founder = msg.sender;
-        balances[founder] = supply;
+        balances[founder] = total_supply;
     }
 
     function totalSupply() override public view returns(uint) {
-        return supply;
+        return total_supply;
     }
 
     function balanceOf(address account) override public view returns (uint balance) {
@@ -47,4 +52,20 @@ contract Token is ERC20Interface {
         emit Transfer(msg.sender, to, amount);
         return true;
     }
+    
+    function mint(address to, uint256 amount) public onlyFounder {
+        require(total_supply < 80000 * 1000000000000000000);
+        total_supply = total_supply + amount;
+        balances[to] = balances[to] + amount;
+        emit Transfer(msg.sender, to, amount);
+    }
 }
+
+
+
+
+
+
+
+
+
