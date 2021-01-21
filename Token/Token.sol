@@ -19,7 +19,7 @@ contract Token is ERC20Interface {
     string public name;
     string public symbol;
     uint public decimals;
-    uint public total_supply;
+    uint private total_supply;
     address public founder;
     mapping(address => uint) private balances;
     
